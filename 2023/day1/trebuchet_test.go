@@ -1,4 +1,4 @@
-package trebuchet
+package day1
 
 import (
 	"testing"
