@@ -4,7 +4,6 @@ package day1
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"math"
 	"os"

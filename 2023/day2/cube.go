@@ -23,18 +23,17 @@ func (t *turn) new(r int, g int, b int) {
 	t.b = b
 }
 
-type game struct {
+type Game struct {
 	id    int
 	turns []*turn
 }
 
-
-func (g *game) new(id int, turns []*turn) {
+func (g *Game) new(id int, turns []*turn) {
 	g.id = id
 	g.turns = turns
 }
 
-func (g *game) toString() {
+func (g *Game) toString() {
 	fmt.Println("id", g.id)
 	for i, turns := range g.turns {
 		fmt.Println("Turn ", i)
@@ -42,7 +41,7 @@ func (g *game) toString() {
 	}
 }
 
-func (g *game) isValid(red int, blue int, green int) bool {
+func (g *Game) isValid(red int, green int, blue int) bool {
 	for _, gameTurn := range g.turns {
 		if gameTurn.r > red || gameTurn.g > green || gameTurn.b > blue {
 			return false
@@ -51,8 +50,7 @@ func (g *game) isValid(red int, blue int, green int) bool {
 	return true
 }
 
-
-func (g *game) parseTurns(turnStrings []string) []*turn {
+func (g *Game) parseTurns(turnStrings []string) []*turn {
 	var turns []*turn
 
 	for _, t := range turnStrings {
@@ -85,7 +83,7 @@ func (g *game) parseTurns(turnStrings []string) []*turn {
 				}
 			}
 		}
-		
+
 		newTurn := new(turn)
 		newTurn.new(red, blue, green)
 		turns = append(turns, newTurn)
@@ -93,9 +91,10 @@ func (g *game) parseTurns(turnStrings []string) []*turn {
 	return turns
 }
 
-func cubeConundrum(inputFile string, red int, blue int, green int) int {
+// parseGames Parses the game input and returns a list of game objects
+func parseGames(inputFile string) []Game {
+	var parsedGames []Game
 	var inputLines []string
-	idSum :=0
 
 	file, err := os.Open(inputFile)
 
@@ -115,13 +114,23 @@ func cubeConundrum(inputFile string, red int, blue int, green int) int {
 		if err != nil {
 			log.Fatal(err)
 		}
-		gameTurns := strings.Split(strings.TrimSpace(turnString[1]), ";")
-		newGame := new(game)
-		parsedTurns := newGame.parseTurns(gameTurns)
-	 	newGame.new(id, parsedTurns)
 		
-		if newGame.isValid(red, blue, green) {
-			idSum += id
+		gameTurns := strings.Split(strings.TrimSpace(turnString[1]), ";")
+		newGame := new(Game)
+		parsedTurns := newGame.parseTurns(gameTurns)
+		newGame.new(id, parsedTurns)
+		parsedGames = append(parsedGames, *newGame)
+	}
+	return parsedGames
+}
+
+// getSumOfValidGames Takes a list of parsed game object and integer values for number of red, green and blue dices and returns the sum of ids of valid games
+func getSumOfValidGames(games []Game, red int, green int, blue int) int {
+	idSum := 0
+
+	for _, g := range games {
+		if g.isValid(red, green, blue) {
+			idSum += g.id
 		}
 	}
 	return idSum

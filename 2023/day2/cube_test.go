@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCubeConundrum(t *testing.T) {
-	assert.Equal(t, 2237, cubeConundrum("input.txt", 12, 13, 14))
+func TestCubeConundrumPart1(t *testing.T) {
+	parsedGames := parseGames("input.txt")
+	assert.Equal(t, 2237, getSumOfValidGames(parsedGames, 12, 14, 13))
 }
