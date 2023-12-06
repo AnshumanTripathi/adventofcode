@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func Trebuchet(filename string) {
+func Trebuchet(filename string) int {
 	var inputLines []string
 	file, err := os.Open(filename)
 	if err != nil {
@@ -46,5 +46,5 @@ func Trebuchet(filename string) {
 		}
 		sum = sum + ((tens * 10) + ones)
 	}
-	fmt.Println(sum)
+	return sum
 }
