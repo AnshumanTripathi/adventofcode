@@ -7,5 +7,11 @@ import (
 )
 
 func TestTrebuchet(t *testing.T) {
-	assert.Equal(t, 54644, "input.txt")
+	inputLines := parseInput("input.txt")
+	assert.Equal(t, 54644, getRealNumberSum(inputLines))
+}
+
+func TestTrebuchetPart2(t *testing.T) {
+	inputLines := parseInput("input.txt")
+	assert.Equal(t, 53348, getParsedNumberSum(inputLines))
 }
